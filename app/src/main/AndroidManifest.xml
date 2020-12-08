@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.appbanhangonline">
+
+    <application
+        android:usesCleartextTraffic="true"
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppBanHangOnline">
+        <activity android:name=".activity.MainActivity_HoaDon_Chi_Tiet"></activity>
+        <activity android:name=".activity.MainActivity_HoaDon" />
+        <activity android:name=".activity.MainActivity_All_Product" />
+        <activity android:name=".activity.MainActivity_Watched" />
+        <activity android:name=".activity.MainActivity_wishlist" />
+        <activity android:name=".activity.Add_Address" />
+        <activity android:name=".login.LoginActivity" >
+
+        </activity>
+        <activity
+            android:name=".activity.Activity_card"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".activity.ProductDetails"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".activity.AddProduct"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+</manifest>

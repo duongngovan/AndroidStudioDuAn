@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:contentDescription="content_description_search"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Trang chủ" />
+    <item
+        android:id="@+id/categoryFragment"
+        android:contentDescription="hihi"
+        android:icon="@drawable/ic_baseline_view_module_24"
+        android:title="Danh mục" />
+<!--    <item-->
+<!--        android:id="@+id/feedFragment"-->
+<!--        android:contentDescription="hihi"-->
+<!--        android:icon="@drawable/icon_notification"-->
+<!--        android:title="Feed" />-->
+    <item
+        android:id="@+id/notificationsFragment"
+        android:contentDescription="hihi"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:title="Thông báo" />
+    <item
+        android:id="@+id/profileFragment"
+        android:contentDescription="hihi"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Cá nhân" />
+
+
+</menu>

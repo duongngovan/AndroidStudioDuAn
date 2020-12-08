@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="190dp"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:elevation="8dp"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Áo khoác tay dài ấm mùa đông"
+                android:textSize="16dp"
+                android:gravity="left|center"
+                />
+
+            <TextView
+                android:layout_below="@+id/product_name"
+                android:id="@+id/product_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Có 123 sản phẩm"
+                android:textSize="12dp"
+                android:textStyle="bold"
+                android:paddingTop="5dp"
+                android:gravity="left|center"
+                android:textColor="@android:color/holo_red_light"/>
+
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ao2"
+            android:layout_weight="2"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+
+
+
+</com.google.android.material.card.MaterialCardView>

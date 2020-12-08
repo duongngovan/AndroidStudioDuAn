@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/app_bar"
+    android:elevation="5dp"
+    android:paddingTop="34dp"
+    android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/search"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/icon_search" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="Nhap tu khoa de tim kiem"
+                                    android:textSize="15sp" />
+                        </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <include
+                    android:id="@+id/cart"
+                    layout="@layout/badge_layout"
+                    android:layout_width="55dp"
+
+                    android:layout_height="55dp"
+                    android:foregroundGravity="center_vertical"
+                    android:tint="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.6"
+                    app:layout_constraintStart_toEndOf="@+id/search"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.appcompat.widget.Toolbar>

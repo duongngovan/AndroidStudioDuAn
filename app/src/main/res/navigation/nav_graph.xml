@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.appbanhangonline.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.appbanhangonline.fragment.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.appbanhangonline.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.appbanhangonline.fragment.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.example.appbanhangonline.fragment.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" />
+    <activity
+        android:id="@+id/searchActivity"
+        android:name="com.example.appbanhangonline.activity.SearchActivity"
+        android:label="activity_search"
+        tools:layout="@layout/activity_search" />
+    <activity
+        android:id="@+id/addProduct"
+        android:name="com.example.appbanhangonline.activity.AddProduct"
+        android:label="activity_add_product"
+        tools:layout="@layout/activity_add_product" />
+    <activity
+        android:id="@+id/activity_card"
+        android:name="com.example.appbanhangonline.activity.Activity_card"
+        android:label="activity_card"
+        tools:layout="@layout/activity_card" />
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="com.example.appbanhangonline.fragment.CardFragment"
+        android:label="CardFragment"
+        tools:layout="@layout/activity_card" />
+    <activity
+        android:id="@+id/shop_Details"
+        android:name="com.example.appbanhangonline.activity.Shop_Details"
+        android:label="activity_shop__details"
+        tools:layout="@layout/activity_shop__details" />
+    <activity
+        android:id="@+id/mainActivity_wishlist"
+        android:name="com.example.appbanhangonline.activity.MainActivity_wishlist"
+        android:label="activity_main_wishlist"
+        tools:layout="@layout/activity_main_wishlist" />
+    <activity
+        android:id="@+id/mainActivity_Watched"
+        android:name="com.example.appbanhangonline.activity.MainActivity_Watched"
+        android:label="activity_main__watched"
+        tools:layout="@layout/activity_main__watched" />
+    <activity
+        android:id="@+id/mainActivity_HoaDon"
+        android:name="com.example.appbanhangonline.activity.MainActivity_HoaDon"
+        android:label="activity_main__hoa_don"
+        tools:layout="@layout/activity_main__hoa_don" />
+
+</navigation>
