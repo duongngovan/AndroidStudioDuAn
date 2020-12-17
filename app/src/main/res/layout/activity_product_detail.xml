@@ -119,7 +119,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="ADD TO CART"
+                android:text="Thêm Vào Giỏ Hàng"
                 android:drawableEnd="@drawable/cart_black"
                 android:drawablePadding="8dp"
                 android:gravity="center"
@@ -132,7 +132,7 @@
             android:id="@+id/buy_now_btn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="BUY NOW"
+            android:text="Mua Ngay"
             app:backgroundTint="@color/app_bar"
             android:layout_marginRight="5dp"
             android:textColor="@color/colorAccent"

@@ -57,6 +57,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/fullname_user"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Nguyễn Bá Thanh Nhàn"
@@ -64,6 +65,7 @@
                                 android:textColor="@color/white"
                                 android:textStyle="bold"/>
                             <TextView
+                                android:id="@+id/email_user"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="dreamernguyen2202"
@@ -134,73 +136,73 @@
 
                 </androidx.cardview.widget.CardView>
 
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:id="@+id/address"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="2dp"-->
+<!--                    app:cardCornerRadius="10dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/icon_user"-->
+<!--                        android:layout_marginLeft="5dp"-->
+<!--                        android:layout_gravity="center_vertical|left"/>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:layout_marginLeft="35dp"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:text="Sổ địa chỉ"-->
+<!--                        android:textSize="16sp" />-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/icon_arrow"-->
+<!--                        android:layout_gravity="center_vertical|right" />-->
+
+
+<!--                </androidx.cardview.widget.CardView>-->
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="2dp"-->
+
+<!--                    app:cardCornerRadius="10dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/icon_user"-->
+<!--                        android:layout_marginLeft="5dp"-->
+<!--                        android:layout_gravity="center_vertical|left"/>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center_vertical"-->
+<!--                        android:layout_marginLeft="35dp"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:text="Tài khoản liên kết"-->
+<!--                        android:textSize="16sp" />-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:src="@drawable/icon_arrow"-->
+<!--                        android:layout_gravity="center_vertical|right" />-->
+
+
+<!--                </androidx.cardview.widget.CardView>-->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
-                    app:cardCornerRadius="10dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_user"
-                        android:layout_marginLeft="5dp"
-                        android:layout_gravity="center_vertical|left"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="35dp"
-                        android:padding="10dp"
-                        android:text="Sổ địa chỉ"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_arrow"
-                        android:layout_gravity="center_vertical|right" />
-
-
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-
-                    app:cardCornerRadius="10dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_user"
-                        android:layout_marginLeft="5dp"
-                        android:layout_gravity="center_vertical|left"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="35dp"
-                        android:padding="10dp"
-                        android:text="Tài khoản liên kết"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_arrow"
-                        android:layout_gravity="center_vertical|right" />
-
-
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-
+                    android:id="@+id/thongtincanhan"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
@@ -420,7 +422,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-
+                    android:id="@+id/btn_dangxuat"
                     android:background="@color/white">
 
                     <ImageView

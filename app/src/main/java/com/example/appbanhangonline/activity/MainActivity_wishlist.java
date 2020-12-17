@@ -15,12 +15,14 @@ import android.widget.Toast;
 
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.adapter.WishlistAdapter;
+import com.example.appbanhangonline.login.LoginFragment;
 import com.example.appbanhangonline.model.Wishlist;
 import com.example.appbanhangonline.service.GetDataRetrofitWishList;
 import com.example.appbanhangonline.service.RetrofitContact;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,29 +60,26 @@ public class MainActivity_wishlist extends AppCompatActivity {
 //        Type type = new TypeToken<List<Watched>>(){}.getType();
 //        list_watched = Prefconfig.readList(getApplicationContext());
 
-        GetDataRetrofitWishList serice = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitWishList.class);
-        Call<List<Wishlist>> call = serice.getAll();
-        Log.d("a2","tau vao roi");
+        sharedPreferences = getSharedPreferences(LoginFragment.USER, Context.MODE_PRIVATE);
+        Log.d("gggg",String.valueOf(sharedPreferences.getString(LoginFragment.ID,"")));
+        String id = sharedPreferences.getString(LoginFragment.ID,"");
+        GetDataRetrofitWishList service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitWishList.class);
+        Call<List<Wishlist>> call = service.getAll(id);
         call.enqueue(new Callback<List<Wishlist>>() {
             @Override
             public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
                 if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
                     list_wishlist = response.body();
                     wishlistAdapter = new WishlistAdapter(list_wishlist);
                     ry_wishlist.setAdapter(wishlistAdapter);
-                    wishlistAdapter.notifyDataSetChanged();
-                }else {
-                    Toast.makeText(getApplicationContext(),"faild",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"fall",Toast.LENGTH_SHORT).show();
+
             }
         });
-
 
 
 

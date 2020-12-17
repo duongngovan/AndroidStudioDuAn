@@ -39,7 +39,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             style="@style/viewParent.headerText.NoMode"
-                            android:text="Already \nhave an \nAccount?"/>
+                            android:text="Bạn \nđã có \ntài khoản?"/>
 
                         <ImageView
                             android:layout_width="150dp"
@@ -79,7 +79,7 @@
                         android:id="@+id/tv_forgot_password"
                         android:onClick="onLoginClicks"
                         style="@style/viewParent"
-                        android:text="Forgot Password?"
+                        android:text="Quên mật khẩu?"
                         android:textColor="@color/primaryTextColor"
                         android:textSize="@dimen/newsMoreTextSize"
                         android:layout_gravity="end"
@@ -99,7 +99,7 @@
                         style="@style/loginButton"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/loginViewsMargin"
-                        android:text="Login" />
+                        android:text="Đăng nhập" />
 
                     <TextView
                         style="@style/parent"
@@ -107,7 +107,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/themeColor"
                         android:textSize="17sp"
-                        android:text="New user? Register Now"
+                        android:text="Người mới? Đăng ký"
                         android:layout_marginTop="@dimen/loginViewsMargin"
                         android:id="@+id/register_show"/>
 
@@ -129,7 +129,7 @@
                             style="@style/viewParent.headerText.NoMode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Use other Methods"
+                            android:text="Hoặc"
                             android:layout_weight="6"
                             android:textSize="12sp"
                             android:textAlignment="center"/>
@@ -146,16 +146,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="20dp"
+
+                        >
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_facebook"/>
                         <ImageView
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_google_plus"
                             android:layout_marginLeft="10dp"/>
+
+
+
                     </LinearLayout>
 
                 </LinearLayout>

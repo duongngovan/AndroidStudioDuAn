@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appbanhangonline.adapter.CategoryAdapter;
@@ -30,6 +31,9 @@ public class CategoryFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private CategorysAdapter categorysAdapter;
     private List<Category> lists;
+    private ImageView btnCart;
+    private TextView textCartItemCount;
+    public static int mCartItemCount ;
 
 
 
@@ -47,7 +51,16 @@ public class CategoryFragment extends Fragment {
 
             }
         });
-
+        btnCart = view.findViewById(R.id.badge_icon);
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.activity_card);
+            }
+        });
+        textCartItemCount = view.findViewById(R.id.badge_count);
+        mCartItemCount = 0;
+        setupBadge();
         recyclerView_category = view.findViewById(R.id.recycview_category);
 //        recyclerView = view.findViewById(R.id.recyclerview_view);
 //        recyclerView.setHasFixedSize(true);
@@ -55,19 +68,20 @@ public class CategoryFragment extends Fragment {
         recyclerView_category .setHasFixedSize(true);
         recyclerView_category .setLayoutManager(new GridLayoutManager(getActivity(),3,GridLayoutManager.VERTICAL,false));
         list = new ArrayList<>();
-        list.add(new Category(R.drawable.thoitrangnam,"Thời trang nam"));
-        list.add(new Category(R.drawable.dt,"Phụ kiện & điện thoại"));
+        list.add(new Category(R.drawable.thoitrangnam,"Thời trang"));
+        list.add(new Category(R.drawable.dt,"Phụ kiện - điện thoại"));
         list.add(new Category(R.drawable.maytinh,"Máy tính"));
         list.add(new Category(R.drawable.dongho,"Đồng hồ"));
         list.add(new Category(R.drawable.giay2,"Giày"));
+        list.add(new Category(R.drawable.book,"Sách"));
         list.add(new Category(R.drawable.suckhoe,"Sức khỏe"));
         list.add(new Category(R.drawable.tuixach,"Túi xách"));
         list.add(new Category(R.drawable.balo,"Balo"));
-        list.add(new Category(R.drawable.book,"Sách"));
 
 
 
-        categoryAdapter = new CategoryAdapter(list);
+
+        categoryAdapter = new CategoryAdapter(list,getContext());
         recyclerView_category.setAdapter(categoryAdapter);
         lists = new ArrayList<>();
 //        lists.add(new Category(R.drawable.ao1,"Áo em 1",4,"10000",1));
@@ -83,5 +97,20 @@ public class CategoryFragment extends Fragment {
 
 
         return view;
+    }
+    private void setupBadge() {
+
+        if (textCartItemCount != null) {
+            if (mCartItemCount == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }

@@ -73,5 +73,15 @@
         android:name="com.example.appbanhangonline.activity.MainActivity_HoaDon"
         android:label="activity_main__hoa_don"
         tools:layout="@layout/activity_main__hoa_don" />
+    <activity
+        android:id="@+id/mainActivity_ThongTin_User"
+        android:name="com.example.appbanhangonline.activity.MainActivity_ThongTin_User"
+        android:label="activity_main__thong_tin__user"
+        tools:layout="@layout/activity_main__thong_tin__user" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.appbanhangonline.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 
 </navigation>

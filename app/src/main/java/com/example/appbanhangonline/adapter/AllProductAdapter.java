@@ -16,12 +16,13 @@ import com.example.appbanhangonline.model.All;
 import com.example.appbanhangonline.activity.ProductDetails;
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.common.ClickWatched;
+import com.example.appbanhangonline.model.Testproduct;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class AllProductAdapter extends RecyclerView.Adapter<AllProductAdapter.AllProductViewHolder> {
-    private List<All> productList;
+    private List<Testproduct> productList;
     private Intent intent;
 
 
@@ -29,7 +30,7 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductAdapter.Al
 
     private Context context;
 
-    public AllProductAdapter(List<All> productList, Context context) {
+    public AllProductAdapter(List<Testproduct> productList, Context context) {
         this.productList = productList;
         this.context = context;
     }
@@ -45,24 +46,30 @@ public class AllProductAdapter extends RecyclerView.Adapter<AllProductAdapter.Al
 
     @Override
     public void onBindViewHolder(@NonNull AllProductViewHolder holder, int position) {
-        All product = productList.get(position);
+        Testproduct product = productList.get(position);
 
-        Picasso.get().load(product.getUrls()).into(holder.image);
+        Picasso.get().load(product.getHinhAnh().get(0).getUrl()).into(holder.image);
 
-        holder.title.setText(product.getNameProduct());
-        holder.price.setText(product.getPriceProduct() + "đ");
+        holder.title.setText(product.getTenSanPham());
+        holder.price.setText(String.valueOf(product.getGia()) + " đ ");
 
-        holder.giam_gia.setText(String.valueOf(product.getAmountProduct()));
+        holder.giam_gia.setText(String.valueOf(product.getGia()+1000)+ " đ ");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.itemView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.button_scale_down));
-                new ClickWatched().click("ngovanduong123@gmail.com",product.getNameProduct(),product.getPriceProduct(),product.getAmountProduct(),1,"100 d",product.getUrls(),holder.itemView.getContext());
-                holder.click(product.getUrls(),product.getNameProduct(),product.getPriceProduct());
+//                new ClickWatched().click("ngovanduong123@gmail.com",product.getNameProduct(),product.getPriceProduct(),product.getAmountProduct(),1,"100 d",product.getUrls(),holder.itemView.getContext());
+                holder.click(product.getHinhAnh().get(0).getUrl(),product.getTenSanPham(),product.getGia());
 
             }
         });
+        holder.image.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));
+        //holder.txt_giam_gia.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
+        holder.price.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
+        //holder.rating.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
+        holder.image.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_scale_animation));
+
 
 
     }

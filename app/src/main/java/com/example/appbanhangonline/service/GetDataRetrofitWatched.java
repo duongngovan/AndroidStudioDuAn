@@ -8,12 +8,15 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface GetDataRetrofitWatched {
-    @GET("/watch/all")
-    Call<List<Watcheds>> getAll();
+    @GET("/hienThiSanPhamDaXemAndroid")
+    Call<List<Watcheds>> getAll(@Query("idUser") String id);
 
-    @POST("/watch/add")
-    Call<Watcheds> add(@Body Watcheds cart);
+    @POST("/sanPhamDaXemAndroid")
+    Call<Watcheds> add(@Query("idUser") String idUser, @Query("idSanPham") String idSanPham);
+
+
 
 }

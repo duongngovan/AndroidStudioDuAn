@@ -1,6 +1,7 @@
 package com.example.appbanhangonline.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,22 +20,33 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.activity.Activity_card;
 import com.example.appbanhangonline.adapter.ProductImagesAdapter;
 import com.example.appbanhangonline.adapter.ProductSuggestAdapter;
+import com.example.appbanhangonline.adapter.SearchAdapter;
+import com.example.appbanhangonline.adapter.TestProductAdapter;
+import com.example.appbanhangonline.login.LoginFragment;
 import com.example.appbanhangonline.model.CardItemModel;
 import com.example.appbanhangonline.model.Cart;
 import com.example.appbanhangonline.model.Product;
+import com.example.appbanhangonline.model.TestCard;
+import com.example.appbanhangonline.model.Testproduct;
 import com.example.appbanhangonline.model.Watched;
 import com.example.appbanhangonline.model.Wishlist;
 import com.example.appbanhangonline.service.GetDataRetrofitCard;
+import com.example.appbanhangonline.service.GetDataRetrofitProduct;
 import com.example.appbanhangonline.service.GetDataRetrofitWishList;
 import com.example.appbanhangonline.service.RetrofitContact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+
+import org.sufficientlysecure.htmltextview.HtmlAssetsImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +60,7 @@ public class ProductDetails extends AppCompatActivity {
     private TabLayout viewpagerIndicator;
     private ViewPager productImagesViewPager;
     private ProductImagesAdapter productImagesAdapter;
-    private ArrayList<Product> productList = new ArrayList<>();
+    private List<Testproduct> productList = new ArrayList<>();
 
     public static int initialRating;
     public static LinearLayout rateNowContainer;
@@ -64,6 +77,8 @@ public class ProductDetails extends AppCompatActivity {
     private String name;
     private int price;
     private String image;
+    private String id;
+    private String deatils;
 
     ///
     private SharedPreferences sharedPreferences,sharedPreferences_wishlist;
@@ -84,13 +99,34 @@ public class ProductDetails extends AppCompatActivity {
     private ImageView img_back;
     private Button btn_mua;
     private Intent intens;
+    private HtmlTextView txt_details;
+    private TestProductAdapter testproducts;
+    private List<TestCard> testCardList = new ArrayList<>();
+
+    ///
+
+
+    private TextView textCartItemCount;
+    public static int mCartItemCount ;
+    private ImageView btnCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         init();
-
+        btnCart = findViewById(R.id.badge_icon);
+        textCartItemCount = findViewById(R.id.badge_count);
+        mCartItemCount = 0;
+        setupBadge();
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Activity_card.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,27 +134,38 @@ public class ProductDetails extends AppCompatActivity {
             }
         });
         txt_title.setText("Sản phẩm");
+        txt_details = findViewById(R.id.text_details);
+
 
         sharedPreferences = getSharedPreferences(MYCARD, Context.MODE_PRIVATE);
 
 
         intent = this.getIntent();
         price = intent.getIntExtra("product_price",0);
+
         txt_name.setText(intent.getStringExtra("product_name"));
         txt_price.setText(String.valueOf(intent.getIntExtra("product_price",0)));
 //        txt_giamgia.setText(intent.getStringExtra("product_giam_gia"));
 //        ratingBar.setRating(intent.getFloatExtra("product_rating",0));
         image = intent.getStringExtra("product_image");
-
+        String id_product = intent.getStringExtra("id_product");
+        deatils = intent.getStringExtra("details");
+        //txt_details.setHtml(deatils,new HtmlHttpImageGetter(txt_details));
         txt_soluong.setText("1");
+
+        int soluongss = Integer.parseInt(intent.getStringExtra("soluong"));
 
 
 
         imgPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ++a;
-                txt_soluong.setText(String.valueOf(a));
+                if (a <= soluongss){
+                    ++a;
+                    txt_soluong.setText(String.valueOf(a));
+                }else {
+                    imgPlus.setVisibility(View.VISIBLE);
+                }
             }
         });
         imgMuis.setOnClickListener(new View.OnClickListener() {
@@ -150,20 +197,10 @@ public class ProductDetails extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
-        productList.add(new Product(R.drawable.ao1,"ao thun 1",5,200000,234));
-        productList.add(new Product(R.drawable.ao2,"ao thun 2",3.5f,10000000,234));
-        productList.add(new Product(R.drawable.ao3,"ao thun dai tay gia da",5,500000,234));
-        productList.add(new Product(R.drawable.ao4,"ao thun 2",4,100000,234));
-        productList.add(new Product(R.drawable.ao1,"ao thun 1",2.5f,200000,234));
-        productList.add(new Product(R.drawable.ao2,"ao thun ao thun dai tay gia da2",5,20000,234));
-        productList.add(new Product(R.drawable.ao3,"ao thun 1",5,200000,234));
-        productList.add(new Product(R.drawable.cover,"ao thun 2",1,1600000,234));
-        productList.add(new Product(R.drawable.ao1,"ao thun ao thun dai tay gia da1",5,1200000,234));
-        productList.add(new Product(R.drawable.ao4,"ao thun 2",5,1800000,234));
-        productList.add(new Product(R.drawable.ao1,"ao thun dai tay gia da",5,200000,234));
 
-        flashSaleAdapter = new ProductSuggestAdapter(productList);
-        recyclerView.setAdapter(flashSaleAdapter);
+
+//        flashSaleAdapter = new ProductSuggestAdapter(productList);
+//        recyclerView.setAdapter(flashSaleAdapter);
 
         String name = txt_name.getText().toString();
         String giamgia = txt_giamgia.getText().toString();
@@ -171,6 +208,12 @@ public class ProductDetails extends AppCompatActivity {
         int price = Integer.parseInt(txt_price.getText().toString());
         int soluong = Integer.parseInt(txt_soluong.getText().toString());
 
+
+        sharedPreferences = getSharedPreferences(LoginFragment.USER, Context.MODE_PRIVATE);
+        Log.d("gggg",String.valueOf(sharedPreferences.getString(LoginFragment.ID,"")));
+        String id = sharedPreferences.getString(LoginFragment.ID,"");
+        String a = intent.getStringExtra("product_name");
+        setTheo(a);
 
         addToWishListbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +224,7 @@ public class ProductDetails extends AppCompatActivity {
                 }else {
 
 
-                    click("ngovanduong123@gmail.com",name,price,soluong,2,giamgia,image,getApplicationContext());
+                    click(id,id_product,getApplicationContext());
 
                     ADDED_TO_WISHLIST = true;
                     addToWishListbtn.setSupportBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
@@ -194,6 +237,8 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                    setText();
+                   mCartItemCount += 1;
+                   setupBadge();
             }
         });
         btn_mua.setOnClickListener(new View.OnClickListener() {
@@ -207,34 +252,83 @@ public class ProductDetails extends AppCompatActivity {
     }
     private void setText(){
 
-        String email = "ngovanduong123@gmail.com";
-        String name_product = txt_name.getText().toString();
-        int price = Integer.parseInt(txt_price.getText().toString());
+
+
+        sharedPreferences = getSharedPreferences(LoginFragment.USER, Context.MODE_PRIVATE);
+        Log.d("gggg",String.valueOf(sharedPreferences.getString(LoginFragment.ID,"")));
+        id = sharedPreferences.getString(LoginFragment.ID,"");
+        String id_product = intent.getStringExtra("id_product");
         int soluong = Integer.parseInt(txt_soluong.getText().toString());
-        int rating = 1;
-        String giam_gia = txt_giamgia.getText().toString();
-        String images = image;
-        Cart cart = new Cart(email,name_product,price,soluong,rating,giam_gia,images);
+        TestCard testCard = new TestCard(id,id_product,soluong);
         GetDataRetrofitCard service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitCard.class);
-        Call<Cart> call = service.add(cart);
-        call.enqueue(new Callback<Cart>() {
+        Call<TestCard> call = service.adds(testCard);
+        call.enqueue(new Callback<TestCard>() {
             @Override
-            public void onResponse(Call<Cart> call, Response<Cart> response) {
-                if (response.isSuccessful()){
-                    Cart user1 = response.body();
-                    //mainIntent();
-                    Toast.makeText(getApplicationContext(),"Thanh cong",Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(),"Email ton tai",Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<TestCard> call, Response<TestCard> response) {
+                if(response.isSuccessful()){
+
+                    Toast.makeText(getApplicationContext(),"Thanh cong",Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getApplicationContext(),"That bai",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Cart> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"That bai",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<TestCard> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"That bai",Toast.LENGTH_LONG).show();
+
             }
         });
 
+//        String email = "ngovanduong123@gmail.com";
+//        String name_product = txt_name.getText().toString();
+//        int price = Integer.parseInt(txt_price.getText().toString());
+//        int soluong = Integer.parseInt(txt_soluong.getText().toString());
+//        int rating = 1;
+//        String giam_gia = txt_giamgia.getText().toString();
+//        String images = image;
+//        Cart cart = new Cart(email,name_product,price,soluong,rating,giam_gia,images);
+//        GetDataRetrofitCard service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitCard.class);
+//        Call<Cart> call = service.add(cart);
+//        call.enqueue(new Callback<Cart>() {
+//            @Override
+//            public void onResponse(Call<Cart> call, Response<Cart> response) {
+//                if (response.isSuccessful()){
+//                    Cart user1 = response.body();
+//                    //mainIntent();
+//                    Toast.makeText(getApplicationContext(),"Thanh cong",Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(getApplicationContext(),"Email ton tai",Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Cart> call, Throwable t) {
+//                Toast.makeText(getApplicationContext(),"That bai",Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+
+    }
+    private void setTheo(String ten){
+        GetDataRetrofitProduct service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
+        Call<List<Testproduct>> call = service.timSanPham(ten);
+        call.enqueue(new Callback<List<Testproduct>>() {
+            @Override
+            public void onResponse(Call<List<Testproduct>> call, Response<List<Testproduct>> response) {
+                if (response.isSuccessful()){
+                    productList = response.body();
+                    testproducts = new TestProductAdapter(productList,getApplicationContext());
+                    recyclerView.setAdapter(testproducts);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Testproduct>> call, Throwable t) {
+
+            }
+        });
     }
 
 
@@ -252,27 +346,39 @@ public class ProductDetails extends AppCompatActivity {
         img_back = findViewById(R.id.icon_back);
         btn_mua = findViewById(R.id.buy_now_btn);
     }
-    private void click(String email, String name_product, int price, int soluong, int rating, String giamgia, String image, Context context){
+    private void click(String idUser,String idSanPham, Context context){
 
-        Wishlist watcheds= new Wishlist(email,name_product,price,soluong,rating,giamgia,image);
+
         GetDataRetrofitWishList service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitWishList.class);
-        Call<Wishlist> call = service.add(watcheds);
-        call.enqueue(new Callback<Wishlist>() {
+        Call<String> call = service.add(idUser,idSanPham);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Wishlist> call, Response<Wishlist> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()){
-                    Wishlist user1 = response.body();
-                    //mainIntent();
-                    Toast.makeText(context,"Thanh cong",Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context,"Email ton tai",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"thanh cong",Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Wishlist> call, Throwable t) {
-                Toast.makeText(context,"That bai",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"That bai",Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+    private void setupBadge() {
+
+        if (textCartItemCount != null) {
+            if (mCartItemCount == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 }

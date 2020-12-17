@@ -45,11 +45,11 @@ public class WatchedAdapter extends RecyclerView.Adapter<WatchedAdapter.WatchedV
     @Override
     public void onBindViewHolder(@NonNull WatchedViewHolder holder, int position) {
         Watcheds list = productList.get(position);
-        Picasso.get().load(list.getImageProduct()).into(holder.image);
-        holder.title.setText(list.getNameProduct());
-        holder.rating.setRating(list.getRatingProduct());
+       Picasso.get().load(list.getTestproduct().getHinhAnh().get(0).getUrl()).into(holder.image);
+        holder.title.setText(list.getTestproduct().getTenSanPham());
+        holder.rating.setRating(3);
         //holder.txt_giagoc.setText(list.getGiam_gia() + " đ ");
-        holder.price.setText(list.getPriceProduct()+ " đ ");
+        holder.price.setText(String.valueOf(list.getTestproduct().getGia())+ " đ ");
         //holder.txt_giagoc.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 //        if(Integer.toString(list.getAmount()).length() > 4 ){
 //            holder.amount.setText("Đã bán " + Math.round(list.getAmount()/1000)  + "k+ sản phẩm");
@@ -62,7 +62,7 @@ public class WatchedAdapter extends RecyclerView.Adapter<WatchedAdapter.WatchedV
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.click(list.getNameProduct(),list.getPriceProduct(),list.getGiamGia(),list.getRatingProduct(),list.getImageProduct());
+                holder.click(list.getTestproduct().getHinhAnh().get(0).getUrl(),list.getTestproduct().getTenSanPham(),list.getTestproduct().getGia(),list.getTestproduct().getId(),list.getTestproduct().getMoTa());
             }
         });
 
@@ -86,13 +86,13 @@ public class WatchedAdapter extends RecyclerView.Adapter<WatchedAdapter.WatchedV
             rating = itemView.findViewById(R.id.ratingBar);
             txt_giagoc = itemView.findViewById(R.id.cutted_price);
         }
-        public void click(String name, int price, String giam_gia, float rating,String image){
+        public void click(String image,String name,int price,String id,String mota){
             intent = new Intent(itemView.getContext(), ProductDetails.class);
             intent.putExtra("product_name",name);
             intent.putExtra("product_price",price);
             intent.putExtra("product_image",image);
-            intent.putExtra("product_giam_gia",giam_gia);
-            intent.putExtra("product_rating",rating);
+            intent.putExtra("id_product",id);
+            intent.putExtra("mota",mota);
             itemView.getContext().startActivity(intent);
         }
     }

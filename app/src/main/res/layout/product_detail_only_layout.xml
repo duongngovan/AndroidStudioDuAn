@@ -38,10 +38,11 @@
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/product_detail_title" />-->
-    <ImageView
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/text_details"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/capture"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_detail_title" />

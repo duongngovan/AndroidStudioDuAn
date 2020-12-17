@@ -60,7 +60,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 holder.itemView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.button_scale_down));
-                new ClickWatched().click("ngovanduong123@gmail.com",products.getNameProduct(),products.getPriceProduct(),products.getAmountProduct(),1,"100 d",products.getUrls(),holder.itemView.getContext());
+//                new ClickWatched().click("ngovanduong123@gmail.com",products.getNameProduct(),products.getPriceProduct(),products.getAmountProduct(),1,"100 d",products.getUrls(),holder.itemView.getContext());
                 holder.click(products.getUrls(),products.getNameProduct(),products.getPriceProduct());
 
             }

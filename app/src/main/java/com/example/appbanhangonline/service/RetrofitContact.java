@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitContact {
     private static Retrofit retrofit;
 
-    private static final String URL = "http://172.18.12.177:3000";
+    private static final String URL = "http://192.168.0.108:3001";
 
     public static  Retrofit getRetrofitInstance(){
         OkHttpClient builder = new OkHttpClient.Builder()

@@ -15,10 +15,12 @@ import android.widget.Toast;
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.adapter.AllProductAdapter;
 import com.example.appbanhangonline.model.All;
+import com.example.appbanhangonline.model.Testproduct;
 import com.example.appbanhangonline.service.GetDataRetrofitProduct;
 import com.example.appbanhangonline.service.RetrofitContact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,7 +33,7 @@ public class MainActivity_All_Product extends AppCompatActivity {
     private TextView txt_title;
     private RecyclerView recyclerView;
     private AllProductAdapter allProductAdapter;
-    private List<All> list = new ArrayList<>();
+    private List<Testproduct> list = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -67,26 +69,22 @@ public class MainActivity_All_Product extends AppCompatActivity {
     }
     private void setAdapter(){
         GetDataRetrofitProduct serices = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
-        Call<List<All>> calls = serices.getAll();
+        Call<List<Testproduct>> calls = serices.getSanPham();
         Log.d("a2","tau vao roi");
-        calls.enqueue(new Callback<List<All>>() {
+        calls.enqueue(new Callback<List<Testproduct>>() {
             @Override
-            public void onResponse(Call<List<All>> call, Response<List<All>> response) {
-                if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
+            public void onResponse(Call<List<Testproduct>> call, Response<List<Testproduct>> response) {
+                if(response.isSuccessful()){
                     list = response.body();
+                    Collections.shuffle(list);
                     allProductAdapter = new AllProductAdapter(list,getApplicationContext());
                     recyclerView.setAdapter(allProductAdapter);
-
-                    Log.d("list", String.valueOf(response.body()));
-                }else {
-                    Toast.makeText(getApplicationContext(),"faild",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<All>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"fall",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Testproduct>> call, Throwable t) {
+
             }
         });
     }

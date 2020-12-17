@@ -36,11 +36,11 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.WishLi
     @Override
     public void onBindViewHolder(@NonNull WishListViewHolder holder, int position) {
         Wishlist list = productList.get(position);
-        Picasso.get().load(list.getImageProduct()).into(holder.image);
-        holder.title.setText(list.getNameProduct());
-        holder.rating.setRating(list.getRatingProduct());
+        Picasso.get().load(list.getTestproduct().getHinhAnh().get(0).getUrl()).into(holder.image);
+        holder.title.setText(list.getTestproduct().getTenSanPham());
+        holder.rating.setRating(3);
         //holder.txt_giagoc.setText(list.getGiam_gia() + " đ ");
-        holder.price.setText(list.getPriceProduct()+ " đ ");
+        holder.price.setText(String.valueOf(list.getTestproduct().getGia())+ " đ ");
         //holder.txt_giagoc.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 

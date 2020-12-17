@@ -24,19 +24,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextView
-        android:paddingLeft="5dp"
+        android:layout_marginStart="16dp"
         android:id="@+id/gird_product_layouts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="5dp"
         android:text="Tất cả sản phẩm"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/gird_product_layout_viewall_btn"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/gird_product_layout_viewall_btn" />
+        app:layout_constraintBottom_toTopOf="@+id/rv_dexuat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="10dp"

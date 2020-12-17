@@ -3,12 +3,14 @@ package com.example.appbanhangonline.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.appbanhangonline.adapter.NotificationAdapter;
@@ -24,6 +26,7 @@ public class NotificationsFragment extends Fragment {
     private List<Notification> list;
     private NotificationAdapter notificationAdapter;
     private RecyclerView recyclerView;
+    private ImageView btnCart;
 
 
     @Override
@@ -32,7 +35,13 @@ public class NotificationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-
+        btnCart = view.findViewById(R.id.badge_icon);
+        btnCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.activity_card);
+            }
+        });
 
         tvTittle = view.findViewById(R.id.title);
         tvTittle.setText("Thông Báo");

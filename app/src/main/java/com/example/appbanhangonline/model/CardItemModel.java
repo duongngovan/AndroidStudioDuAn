@@ -1,5 +1,7 @@
 package com.example.appbanhangonline.model;
 
+import java.util.List;
+
 public class CardItemModel {
 
     public static final int ADDRESS = 0;
@@ -9,6 +11,8 @@ public class CardItemModel {
     private int type;
 
     ////// cart item
+    private String id_user;
+    private String id_item;
     private String image_product;
     private String name_product;
     private String giam_gia;
@@ -31,6 +35,27 @@ public class CardItemModel {
         this.so_luong = so_luong;
     }
 
+    public CardItemModel(int type, String id_user, String id_item, String image_product, String name_product, String giam_gia, int price_product, int so_luong) {
+        this.type = type;
+        this.id_user = id_user;
+        this.id_item = id_item;
+        this.image_product = image_product;
+        this.name_product = name_product;
+        this.giam_gia = giam_gia;
+        this.price_product = price_product;
+        this.so_luong = so_luong;
+    }
+
+    public CardItemModel(int type, String id_item, String image_product, String name_product, String giam_gia, int price_product, int so_luong) {
+        this.type = type;
+        this.id_item = id_item;
+        this.image_product = image_product;
+        this.name_product = name_product;
+        this.giam_gia = giam_gia;
+        this.price_product = price_product;
+        this.so_luong = so_luong;
+    }
+
     public CardItemModel(int type, String image_product, String name_product, String giam_gia, int price_product, int so_luong) {
         this.type = type;
         this.image_product = image_product;
@@ -38,6 +63,22 @@ public class CardItemModel {
         this.giam_gia = giam_gia;
         this.price_product = price_product;
         this.so_luong = so_luong;
+    }
+
+    public String getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
+    }
+
+    public String getId_item() {
+        return id_item;
+    }
+
+    public void setId_item(String id_item) {
+        this.id_item = id_item;
     }
 
     public String getImage_product() {
@@ -88,6 +129,28 @@ public class CardItemModel {
         this.type = type;
     }
 
+//    private List<TestCardModel> testCardModel;
+//
+//    public CardItemModel(int type, List<TestCardModel> testCardModel) {
+//        this.type = type;
+//        this.testCardModel = testCardModel;
+//    }
+//
+//    public int getType() {
+//        return type;
+//    }
+//
+//    public void setType(int type) {
+//        this.type = type;
+//    }
+//
+//    public List<TestCardModel> getTestCardModel() {
+//        return testCardModel;
+//    }
+//
+//    public void setTestCardModel(List<TestCardModel> testCardModel) {
+//        this.testCardModel = testCardModel;
+//    }
 
     //
     private int sumAmount;

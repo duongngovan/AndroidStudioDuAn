@@ -15,7 +15,7 @@ public class Product_Shop_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shop_product,container,false);
-        return view;
+//        View view = inflater.inflate(R.layout.fragment_shop_product,container,false);
+        return null;
     }
 }

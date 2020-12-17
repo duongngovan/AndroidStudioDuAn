@@ -1,6 +1,8 @@
 package com.example.appbanhangonline.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
@@ -24,23 +27,30 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.appbanhangonline.activity.Activity_card;
+import com.example.appbanhangonline.activity.Prefconfig;
 import com.example.appbanhangonline.adapter.DeXuatApdapter;
 import com.example.appbanhangonline.adapter.FlashSaleAdapter;
 import com.example.appbanhangonline.adapter.ProductAdapter;
 import com.example.appbanhangonline.adapter.SliderAdapter;
+import com.example.appbanhangonline.adapter.TestProductAdapter;
 import com.example.appbanhangonline.adapter.TopProductAdapter;
 import com.example.appbanhangonline.adapter.TopSearchAdapter;
 import com.example.appbanhangonline.adapter.WatchedAdapter;
 import com.example.appbanhangonline.activity.MainActivity_All_Product;
+import com.example.appbanhangonline.login.LoginFragment;
 import com.example.appbanhangonline.model.HomePageModel;
 import com.example.appbanhangonline.model.Product;
 import com.example.appbanhangonline.model.All;
 import com.example.appbanhangonline.model.SlideItem;
 import com.example.appbanhangonline.model.SliderModel;
+import com.example.appbanhangonline.model.Testproduct;
+import com.example.appbanhangonline.model.UserModel;
 import com.example.appbanhangonline.model.Watcheds;
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.service.GetDataRetrofitProduct;
@@ -48,6 +58,8 @@ import com.example.appbanhangonline.service.GetDataRetrofitWatched;
 import com.example.appbanhangonline.service.RetrofitContact;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -89,16 +101,28 @@ public class HomeFragment extends Fragment {
     private ProductAdapter productAdapter;
     private Button allProduct;
 
+    private List<Testproduct> listtest = new ArrayList<>();
+    private  TestProductAdapter testProductAdapter;
+    private SharedPreferences sharedPreferences;
+    private String id;
+    private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         search_bar = view.findViewById(R.id.search);
         btnCart = view.findViewById(R.id.badge_icon);
         textCartItemCount = view.findViewById(R.id.badge_count);
+        progressBar = view.findViewById(R.id.home_progressbar);
+        swipeRefreshLayout = view.findViewById(R.id.home_swip);
+        mCartItemCount = 0;
+        setupBadge();
         //
         mCartItemCount = new Activity_card().LIST_CARD;
 
@@ -116,40 +140,16 @@ public class HomeFragment extends Fragment {
         allProduct = view.findViewById(R.id.gird_product_layout);
         allSale = view.findViewById(R.id.gird_product_layout_viewall_btn);
         allHot = view.findViewById(R.id.gird_product_layout_viewall_btns);
+        sharedPreferences = getContext().getSharedPreferences(LoginFragment.USER, Context.MODE_PRIVATE);
+        Log.d("gggg",String.valueOf(sharedPreferences.getString(LoginFragment.ID,"")));
+        id = sharedPreferences.getString(LoginFragment.ID,"");
         allProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(intent);
             }
         });
-        allHot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
-//        allSale.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(event.getAction() == MotionEvent.ACTION_UP){
-//                    allSale.startAnimation( scaleUp);
-//                }else   if(event.getAction() == MotionEvent.ACTION_DOWN){
-//                    allSale.startAnimation( scaleDown);
-//                }
-//                return true;
-//            }
-//        });
-        allHot.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    allHot.startAnimation( scaleUp);
-                }else   if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    allHot.startAnimation( scaleDown);
-                }
-                return true;
-            }
-        });
+
 
 
         LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_down_to_up);
@@ -196,13 +196,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-//        btnCart = view.findViewById(R.id.cart);
-//        btnCart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getActivity(), "Đây là giỏ hàng", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
 
         List<SliderModel> sliderModelFakeList = new ArrayList<>();
         sliderModelFakeList.add(new SliderModel("null", R.drawable.ao1));
@@ -216,32 +210,14 @@ public class HomeFragment extends Fragment {
         rv1.setHasFixedSize(true);
         rv1.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         rv2 = view.findViewById(R.id.rv_hot);
-        rv2.setHasFixedSize(true);
-        rv2.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+//        rv2.setHasFixedSize(true);
+//        rv2.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         rv3 = view.findViewById(R.id.rv_top_search);
         ////
 
-//        GetDataRetrofitProduct serice = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
-//        Call<List<Products>> call = serice.getAll();
-//        call.enqueue(new Callback<List<Products>>() {
-//            @Override
-//            public void onResponse(Call<List<Products>> call, Response<List<Products>> response) {
-//                if (response.isSuccessful()){
-//
-//                    list_product = response.body();
-//                    productAdapter = new ProductAdapter(list_product,getContext());
-//                    rv1.setAdapter(productAdapter);
-//                    Log.d("list", String.valueOf(response.body()));
-//                }else {
-//                    Toast.makeText(getContext(),"faild",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Products>> call, Throwable t) {
-//
-//            }
-//        });
+
+
+
         allSale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,156 +227,46 @@ public class HomeFragment extends Fragment {
         });
 
 
-        ////
-//        rv3.setHasFixedSize(true);
-//        rv3.setLayoutManager(new GridLayoutManager(getActivity(),2,GridLayoutManager.HORIZONTAL,false));
-//        rv4 = view.findViewById(R.id.rv_list_sp);
-//        rv4.setHasFixedSize(true);
-//        rv4.setLayoutManager(new GridLayoutManager(getActivity(),2,GridLayoutManager.VERTICAL,false));
+
+
+
 
 
         recyclerView_watched = view.findViewById(R.id.rv_watched);
         recyclerView_watched.setHasFixedSize(true);
         recyclerView_watched.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",5,200000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun 2",3.5f,100000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun dai tay gia da",5,100000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",4,100000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",2.5f,100000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun ao thun dai ",5,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun 1",5,20000,234,"123"));
-//        productList.add(new Product(R.drawable.cover,"ao thun 2",1,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun ao thun dai ",5,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",5,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun dai tay gia da",5,20000,234,"123"));
-////
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",5,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun 2",3.5f,20000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun dai tay gia da",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",4,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",2.5f,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun ao thun dai ",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun 1",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.cover,"ao thun 2",1,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun ao thun dai ",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun dai tay gia da",5,5000,234,"123"));
-////
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun 2",3.5f,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun dai tay gia da",5,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",4,5000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun 1",2.5f,30000,234,"123"));
-//        productList.add(new Product(R.drawable.ao2,"ao thun ao thun dai ",5,30000,234,"123"));
-//        productList.add(new Product(R.drawable.ao3,"ao thun 1",5,30000,234,"123"));
-//        productList.add(new Product(R.drawable.cover,"ao thun 2",1,30000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun ao thun dai ",5,30000,234,"123"));
-//        productList.add(new Product(R.drawable.ao4,"ao thun 2",5,10000,234,"123"));
-//        productList.add(new Product(R.drawable.ao1,"ao thun dai tay gia da",5,10000,234,"123"));
-////
+
 
         homeList.add(new HomePageModel(0,sliderModelFakeList));
         homeList.add(new HomePageModel(1,R.drawable.banner_shop,""));
 
 
-//        list_watched.add(new Watched(R.drawable.ao1,"ao thun 1",5,200000,234));
-//        list_watched.add(new Watched(R.drawable.ao1,"ao thun 1",5,324,234));
-//        list_watched.add(new Watched(R.drawable.ao1,"ao thun 1",5,200000,234));
-//        list_watched.add(new Watched(R.drawable.ao1,"ao thun 1",5,200000,234));
-//        list_watched.add(new Watched(R.drawable.ao1,"ao thun 1",5,200000,234));
-
-        ///list.watch
-
-        GetDataRetrofitWatched serice = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitWatched.class);
-        Call<List<Watcheds>> call = serice.getAll();
-        Log.d("a2","tau vao roi");
-        call.enqueue(new Callback<List<Watcheds>>() {
-            @Override
-            public void onResponse(Call<List<Watcheds>> call, Response<List<Watcheds>> response) {
-                if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
-                    list_watched = response.body();
-                    watchedAdapter = new WatchedAdapter(list_watched,getContext());
-                    recyclerView_watched.setAdapter(watchedAdapter);
-                    watchedAdapter.notifyDataSetChanged();
-                }else {
-                    Toast.makeText(getContext(),"faild",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Watcheds>> call, Throwable t) {
-                Toast.makeText(getContext(),"fall",Toast.LENGTH_SHORT).show();
-                Log.d("a2","fail");
-            }
-        });
-        ///
-
-        GetDataRetrofitProduct serices = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
-        Call<List<All>> calls = serices.getAll();
-        Log.d("a2","tau vao roi");
-        calls.enqueue(new Callback<List<All>>() {
-            @Override
-            public void onResponse(Call<List<All>> call, Response<List<All>> response) {
-                if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
-                    list_product = response.body();
-                    productAdapter = new ProductAdapter(list_product,getContext());
-                    rv1.setAdapter(productAdapter);
-
-                    Log.d("list", String.valueOf(response.body()));
-                }else {
-                    Toast.makeText(getContext(),"faild",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<All>> call, Throwable t) {
-                Toast.makeText(getContext(),"fall",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        GetDataRetrofitProduct sericess = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
-        Call<List<All>> callss = sericess.getAlls();
-        Log.d("a2","tau vao roi");
-        callss.enqueue(new Callback<List<All>>() {
-            @Override
-            public void onResponse(Call<List<All>> call, Response<List<All>> response) {
-                if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
-                    list_product = response.body();
-                    productAdapter = new ProductAdapter(list_product,getContext());
-
-                    rv2.setAdapter(productAdapter);
-                    Log.d("list", String.valueOf(response.body()));
-                }else {
-                    Toast.makeText(getContext(),"faild",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<All>> call, Throwable t) {
-                Toast.makeText(getContext(),"fall",Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
-        ///
-        //
+
         flashSaleAdapter = new FlashSaleAdapter(productList,getContext());
         topProductAdapter = new TopProductAdapter(productList,getContext());
         topSearchAdapter = new TopSearchAdapter(productList);
 
+            setSale();
+            setWatched();
+            setAll();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setSale();
+                setWatched();
+                setAll();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
-//
-        //rv1.setAdapter(flashSaleAdapter);
+        //progressBar.setVisibility(View.GONE);
 
-//        rv3.setAdapter(topSearchAdapter);
-       // rv4.setAdapter(allProductAdapter);
 
-        setupBadge();
 
         recyclerView_dexuat = view.findViewById(R.id.rv_dexuat);
        // recyclerView_dexuat.setLayoutAnimation(layoutAnimationController);
@@ -408,31 +274,74 @@ public class HomeFragment extends Fragment {
         recyclerView_dexuat.setHasFixedSize(true);
         recyclerView_dexuat.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
-        GetDataRetrofitProduct sericesss = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
-        Call<List<All>> callsss = sericesss.getAll();
-        Log.d("a2","tau vao roi");
-        callsss.enqueue(new Callback<List<All>>() {
-            @Override
-            public void onResponse(Call<List<All>> call, Response<List<All>> response) {
-                if (response.isSuccessful()){
-                    Log.d("a1", "onResponse: "+response.body());
-                    list_product = response.body();
-                    deXuatApdapter = new DeXuatApdapter(list_product,getContext());
-                    recyclerView_dexuat.setAdapter(deXuatApdapter);
 
-                    Log.d("list", String.valueOf(response.body()));
-                }else {
-                    Toast.makeText(getContext(),"faild",Toast.LENGTH_SHORT).show();
+
+        return view;
+    }
+    private void setWatched(){
+        GetDataRetrofitWatched service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitWatched.class);
+        Call<List<Watcheds>> call = service.getAll(id);
+        call.enqueue(new Callback<List<Watcheds>>() {
+            @Override
+            public void onResponse(Call<List<Watcheds>> call, Response<List<Watcheds>> response) {
+                if (response.isSuccessful()){
+
+                    list_watched = response.body();
+                    Collections.shuffle(list_watched);
+                    watchedAdapter = new WatchedAdapter(list_watched,getContext());
+                    recyclerView_watched.setAdapter(watchedAdapter);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<All>> call, Throwable t) {
-                Toast.makeText(getContext(),"fall",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Watcheds>> call, Throwable t) {
+
             }
         });
+    }
+    private void setSale(){
+        GetDataRetrofitProduct service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
+        Call<List<Testproduct>> call = service.getSanPham();
 
-        return view;
+        call.enqueue(new Callback<List<Testproduct>>() {
+            @Override
+            public void onResponse(Call<List<Testproduct>> call, Response<List<Testproduct>> response) {
+                if (response.isSuccessful()){
+
+                    listtest = response.body();
+                    Collections.shuffle(listtest);
+                    testProductAdapter = new TestProductAdapter(listtest,getContext());
+                    rv1.setAdapter(testProductAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Testproduct>> call, Throwable t) {
+
+            }
+        });
+    }
+    private void setAll(){
+        GetDataRetrofitProduct service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitProduct.class);
+        Call<List<Testproduct>> call = service.getSanPham();
+
+        call.enqueue(new Callback<List<Testproduct>>() {
+            @Override
+            public void onResponse(Call<List<Testproduct>> call, Response<List<Testproduct>> response) {
+                if (response.isSuccessful()){
+
+                    listtest = response.body();
+                    Collections.shuffle(listtest);
+                    deXuatApdapter = new DeXuatApdapter(listtest,getContext());
+                    recyclerView_dexuat.setAdapter(deXuatApdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Testproduct>> call, Throwable t) {
+
+            }
+        });
     }
     private Runnable sliderRunnable = new Runnable() {
         @Override

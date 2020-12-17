@@ -1,5 +1,7 @@
 package com.example.appbanhangonline.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appbanhangonline.activity.MainActivity_HoaDon_Chi_Tiet;
+import com.example.appbanhangonline.activity.MainActivity_NganhHang;
 import com.example.appbanhangonline.model.Category;
 import com.example.appbanhangonline.R;
 
@@ -17,9 +21,12 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private List<Category> list;
+    private Context context;
+    private Intent intent;
 
-    public CategoryAdapter(List<Category> list) {
+    public CategoryAdapter(List<Category> list, Context context) {
         this.list = list;
+        this.context = context;
     }
 
     @NonNull
@@ -35,6 +42,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = list.get(position);
         holder.img_category.setImageResource(category.getImage());
         holder.txt_title.setText(category.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.click(category.getTitle());
+            }
+        });
     }
 
     @Override
@@ -52,5 +65,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             img_category = (ImageView) itemView.findViewById(R.id.category_image);
             txt_title = (TextView) itemView.findViewById(R.id.category_title);
         }
+        public void click(String idHoDon){
+
+            intent = new Intent(itemView.getContext(), MainActivity_NganhHang.class);
+            intent.putExtra("nganh",idHoDon);
+            itemView.getContext().startActivity(intent);
+        }
+
     }
+
 }

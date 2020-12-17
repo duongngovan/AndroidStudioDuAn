@@ -7,34 +7,32 @@
     tools:context=".activity.Activity_card"
     android:background="#E4DDDD"
     android:theme="@style/bottombar">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout2"
+    <include
+        android:id="@+id/include2"
+        layout="@layout/tol_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_giohang"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/app_bar"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycview_card"
-        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/include2">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycview_card"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"

@@ -6,14 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity_HoaDon">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_hoadon"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_hoadon"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2" />
+        app:layout_constraintTop_toBottomOf="@+id/include2">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_hoadon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include2" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include
         android:id="@+id/include2"
         layout="@layout/tol_bar"

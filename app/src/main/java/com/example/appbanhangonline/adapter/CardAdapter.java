@@ -1,6 +1,8 @@
 package com.example.appbanhangonline.adapter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,13 +26,25 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CardAdapter extends RecyclerView.Adapter  {
 
     private List<CardItemModel> cartItemModelList;
     private  int a ;
     private int b;
+    private Context context;
 
     private int lastPosition = -1;
+    private SharedPreferences sharedPreferences;
+
+
+    public CardAdapter(List<CardItemModel> cartItemModelList, Context context) {
+        this.cartItemModelList = cartItemModelList;
+        this.context = context;
+    }
 
     public CardAdapter(List<CardItemModel> list) {
         this.cartItemModelList = list;
@@ -87,7 +102,7 @@ public class CardAdapter extends RecyclerView.Adapter  {
                 String image = cartItemModelList.get(position).getImage_product();
                 //String productID = cartItemModelList.get(position).getId();
                 String names = cartItemModelList.get(position).getName_product();
-                String giam_gia = cartItemModelList.get(position).getGiam_gia();
+                String giam_gia = "10%";
                 int price_product = cartItemModelList.get(position).getPrice_product();
                 int soluong = cartItemModelList.get(position).getSo_luong();
 
@@ -103,10 +118,30 @@ public class CardAdapter extends RecyclerView.Adapter  {
                     @Override
                     public void onClick(View v) {
                         Log.d("vua","vuabam");
+
+                        GetDataRetrofitCard service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitCard.class);
+
+                        Call<List<String>> call = service.delte(cartItemModelList.get(position).getId_user(),cartItemModelList.get(position).getId_item());
+                        Log.d("id",String.valueOf(cartItemModelList.get(position).getId_user()));
+                        Log.d("idSanPham",String.valueOf(cartItemModelList.get(position).getId_item()));
+                        call.enqueue(new Callback<List<String>>() {
+                           @Override
+                           public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                              if (response.isSuccessful()){
+                                  Toast.makeText(context,"Thanh cong",Toast.LENGTH_SHORT).show();
+                              }
+
+                           }
+
+                           @Override
+                           public void onFailure(Call<List<String>> call, Throwable t) {
+                               Toast.makeText(context,"That bai",Toast.LENGTH_SHORT).show();
+                           }
+                       });
                         cartItemModelList.remove(cartItemModelList.get(holder.getAdapterPosition()));
                         notifyItemRemoved(holder.getAdapterPosition());
                         notifyDataSetChanged();
-                        GetDataRetrofitCard service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitCard.class);
+
 
                     }
                 });
@@ -132,7 +167,7 @@ public class CardAdapter extends RecyclerView.Adapter  {
 //                    totalAmount = totalItemPrice + 60;
 //                }
                 int soLuong = a;
-                int totalItems = cartItemModelList.size() - 2;
+                int totalItems = cartItemModelList.size() - 1;
                 int tong = 0;
                 for(int i = 0; i < cartItemModelList.size(); i++){
                    tong += (cartItemModelList.get(i).getPrice_product() * cartItemModelList.get(i).getSo_luong() );

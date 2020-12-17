@@ -51,6 +51,7 @@ public class RegisterFragment extends Fragment {
     private EditText password;
     private EditText confirmPassword;
     private EditText phone;
+    private EditText address;
 
     private ImageButton closeBtn;
     private Button signUpBtn;
@@ -78,6 +79,7 @@ public class RegisterFragment extends Fragment {
         confirmPassword = view.findViewById(R.id.editTextPasswords);
         progressBar = view.findViewById(R.id.sign_up_progressbar);
         signUpBtn = view.findViewById(R.id.cirRegisterButton);
+        address = view.findViewById(R.id.editTextAddress);
         //closeBtn = view.findViewById(R.id.sign_up_close_btn);
         img_back = view.findViewById(R.id.image_register_back);
 
@@ -210,7 +212,8 @@ public class RegisterFragment extends Fragment {
                 String password_input = password.getText().toString();
                 String fullname_input = fullName.getText().toString();
                 String phone_input = phone.getText().toString();
-                UserModel user = new UserModel(email_input,fullname_input,phone_input,password_input);
+                String addresss = address.getText().toString();
+                UserModel user = new UserModel(email_input,fullname_input,password_input,phone_input,addresss);
                 GetDataRetrofitUser service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitUser.class);
                 Call<UserModel> call = service.add(user);
                 call.enqueue(new Callback<UserModel>() {
@@ -228,6 +231,7 @@ public class RegisterFragment extends Fragment {
                     @Override
                     public void onFailure(Call<UserModel> call, Throwable t) {
                         Toast.makeText(getContext(),"That bai",Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 

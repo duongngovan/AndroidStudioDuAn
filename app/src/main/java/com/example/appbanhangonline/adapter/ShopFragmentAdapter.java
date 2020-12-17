@@ -19,8 +19,8 @@ public class ShopFragmentAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                Shop_CuaHang_Fragment shop_cuaHang_fragment = new Shop_CuaHang_Fragment();
-                return  shop_cuaHang_fragment;
+//                Shop_CuaHang_Fragment shop_cuaHang_fragment = new Shop_CuaHang_Fragment();
+ //               return  shop_cuaHang_fragment;
 
             case 1:
                 Product_Shop_Fragment product_shop_fragment = new Product_Shop_Fragment();

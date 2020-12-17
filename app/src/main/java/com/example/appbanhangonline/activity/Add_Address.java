@@ -2,7 +2,9 @@ package com.example.appbanhangonline.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,14 @@ import android.widget.TextView;
 
 import com.example.appbanhangonline.R;
 import com.example.appbanhangonline.activity.Activity_card;
+import com.example.appbanhangonline.login.LoginFragment;
+import com.example.appbanhangonline.model.UserModel;
+import com.example.appbanhangonline.service.GetDataRetrofitUser;
+import com.example.appbanhangonline.service.RetrofitContact;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Add_Address extends AppCompatActivity {
 
@@ -22,6 +32,8 @@ public class Add_Address extends AppCompatActivity {
     private TextView txt_title;
     private Intent intent;
     private Button btn;
+    private String id;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -36,6 +48,9 @@ public class Add_Address extends AppCompatActivity {
             }
         });
         txt_title.setText("Thêm địa chỉ");
+        sharedPreferences = getSharedPreferences(LoginFragment.USER, Context.MODE_PRIVATE);
+        Log.d("gggg",String.valueOf(sharedPreferences.getString(LoginFragment.ID,"")));
+        id = sharedPreferences.getString(LoginFragment.ID,"");
 
 
 
@@ -54,6 +69,21 @@ public class Add_Address extends AppCompatActivity {
                 String address = duong + ", "+quan + ", "+tinh;
                 String name = txt_name.getText().toString();
                 String phone = txt_sđt.getText().toString();
+                GetDataRetrofitUser service = RetrofitContact.getRetrofitInstance().create(GetDataRetrofitUser.class);
+                Call<UserModel> call = service.capNhat(id,name,address,phone);
+                call.enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        if (response.isSuccessful()){
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+
+                    }
+                });
                 intent.putExtra("address",address);
                 intent.putExtra("name",name);
                 intent.putExtra("phone",phone);

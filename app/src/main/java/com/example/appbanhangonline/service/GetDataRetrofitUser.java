@@ -12,9 +12,13 @@ import retrofit2.http.Query;
 
 public interface GetDataRetrofitUser {
 
-    @POST("/user/add")
+    @POST("/registerUser")
     Call<UserModel> add(@Body UserModel userModel);
 
-    @GET("/user/login")
-    Call<List<UserModel>> login(@Query("email") String username, @Query("password") String pass);
+    @POST("/loginUserAndroid")
+    Call<UserModel> login(@Query("email") String username, @Query("password") String pass);
+
+    @POST("/capNhatThongTinUserAndroid")
+    Call<UserModel> capNhat(@Query("idUser")String id,@Query("hoVaTen") String hoVaTen, @Query("soDienThoai") String soDienThoai, @Query("diaChi")String diachi);
+
 }

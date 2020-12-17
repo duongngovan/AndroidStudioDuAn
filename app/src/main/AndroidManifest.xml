@@ -3,7 +3,6 @@
     package="com.example.appbanhangonline">
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +10,24 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppBanHangOnline">
-        <activity android:name=".activity.MainActivity_HoaDon_Chi_Tiet"></activity>
+        android:theme="@style/Theme.AppBanHangOnline"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.MainActivity_ManHinhChao">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity_NganhHang" />
+        <activity android:name=".activity.MainActivity_ThongTin_User" />
+        <activity android:name=".activity.MainActivity_HoaDon_Chi_Tiet" />
         <activity android:name=".activity.MainActivity_HoaDon" />
         <activity android:name=".activity.MainActivity_All_Product" />
         <activity android:name=".activity.MainActivity_Watched" />
         <activity android:name=".activity.MainActivity_wishlist" />
         <activity android:name=".activity.Add_Address" />
-        <activity android:name=".login.LoginActivity" >
+        <activity android:name=".login.LoginActivity">
 
         </activity>
         <activity
@@ -33,13 +42,11 @@
         <activity
             android:name=".activity.SearchActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
